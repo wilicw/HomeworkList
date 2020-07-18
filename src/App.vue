@@ -3,7 +3,8 @@
     <el-header>
       <p class="title">
         <span @click="$router.push('/')">聯絡簿</span>
-        <i v-if="admin" @click="$router.push('/add')" class="add el-icon-plus"></i></p>
+        <i v-if="admin" @click="$router.push('/add')" class="add el-icon-plus"></i>
+      </p>
     </el-header>
     <el-main>
       <router-view :tags="dataTags" :subjects="dataSubjects"></router-view>
@@ -37,11 +38,10 @@ export default {
   .add
     float: right
     color: #AAAAAA
+    margin-top: 5px
   .title
     vertical-align: middle
     font-size: 1.5em
   .el-main
     margin: 0 auto
-    max-width: 800px
-    overflow: hide
 </style>

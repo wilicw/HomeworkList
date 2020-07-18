@@ -77,7 +77,7 @@ export default {
           })
         } else {
           this.$message({
-            message: '',
+            message: 'Success',
             type: 'success'
           })
         }

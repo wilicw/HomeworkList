@@ -7,7 +7,7 @@
     </el-card>
     <br>
   </div>
-  <el-dialog title="修改" :visible.sync="dialog">
+  <el-dialog title="修改" :visible.sync="dialog" width="80%">
     <Edit :tags="tags" :subjects="subjects" :id="id" :lists="lists"></Edit>
   </el-dialog>
 </div>
@@ -44,19 +44,25 @@ export default {
       if (!this.admin) {
         return
       }
-      const response = (await api.delHw(id, JSON.parse(this.admin).username, JSON.parse(this.admin).password)).data
-      if (response.error) {
-        this.$message({
-          message: response.error,
-          type: 'error'
-        })
-      } else {
-        this.$message({
-          message: '',
-          type: 'success'
-        })
-      }
-      this.fetchData()
+      this.$confirm('是否刪除', 'Warning', {
+        confirmButtonText: '是',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const response = (await api.delHw(id, JSON.parse(this.admin).username, JSON.parse(this.admin).password)).data
+        this.fetchData()
+        if (response.error) {
+          this.$message({
+            message: response.error,
+            type: 'error'
+          })
+        } else {
+          this.$message({
+            message: 'Success',
+            type: 'success'
+          })
+        }
+      })
     },
     fetchData: async function () {
       const today = (new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime())
@@ -78,7 +84,9 @@ export default {
 
 <style lang="sass">
   .box-card
-    width: 500px
+    margin: 0
+    width: 85vw
+    max-width: 800px
   .tool
     float: right
 </style>
