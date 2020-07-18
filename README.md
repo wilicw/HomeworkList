@@ -1,4 +1,4 @@
-# hw
+# homeworklist
 
 ## Project setup
 ```

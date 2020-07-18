@@ -1,20 +1,20 @@
 import axois from 'axios'
 
 const config = {
-  baseURL: '/api',
+  baseURL: 'http://127.0.0.1:5000/api',
   timeout: 100000
 }
 
 const client = axois.create(config)
 
 export default {
-  getHw: (time: number) =>
+  getHw: (time) =>
     client.get(`?now=${time}`),
   getTags: () =>
     client.get('tags/'),
   getSubjects: () =>
     client.get('subjects/'),
-  putHw: (text: string, tag: number, subject: number, time: number, user: string, pass: string) =>
+  putHw: (text, tag, subject, time, user, pass) =>
     client.put('/', {
       text: text,
       tag: tag,
@@ -23,7 +23,7 @@ export default {
       username: user,
       password: pass
     }),
-  delHw: (id: number, user: string, pass: string) =>
+  delHw: (id, user, pass) =>
     client.delete('/', {
       data: {
         id: id,
@@ -31,7 +31,7 @@ export default {
         password: pass
       }
     }),
-  postHw: (id: number, text: string, tag: number, subject: number, time: number, user: string, pass: string) =>
+  postHw: (id, text, tag, subject, time, user, pass) =>
     client.post('/', {
       id: id,
       text: text,
