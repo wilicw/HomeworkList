@@ -21,6 +21,6 @@ RUN pip3 install -r requirements.txt --src /usr/local/src
 COPY api .
 COPY nginx.conf /etc/nginx
 RUN addgroup -S www && adduser -S www-data -G www
-RUN chmod +x ./api/startup.sh
+RUN chmod +x /app/server/startup.sh
 COPY --from=build /app/dist /app/cli/dist
 CMD ["./startup.sh"]
