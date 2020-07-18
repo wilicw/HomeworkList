@@ -1,32 +1,47 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <el-container>
+    <el-header>
+      <p class="title">
+        <span @click="$router.push('/')">聯絡簿</span>
+        <i v-if="admin" @click="$router.push('/add')" class="add el-icon-plus"></i></p>
+    </el-header>
+    <el-main>
+      <router-view :tags="dataTags" :subjects="dataSubjects"></router-view>
+    </el-main>
+  </el-container>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+import api from '@/api'
+export default {
+  name: 'app',
+  data: () => ({
+    admin: false,
+    dataTags: [],
+    dataSubjects: []
+  }),
+  beforeMount () {
+    this.admin = window.localStorage.getItem('user')
+    this.fetchData()
+  },
+  methods: {
+    fetchData: async function () {
+      this.dataTags = (await api.getTags()).data
+      this.dataSubjects = (await api.getSubjects()).data
     }
   }
 }
+</script>
+
+<style scoped lang="sass">
+  .add
+    float: right
+    color: #AAAAAA
+  .title
+    vertical-align: middle
+    font-size: 1.5em
+  .el-main
+    margin: 0 auto
+    max-width: 800px
+    overflow: hide
 </style>

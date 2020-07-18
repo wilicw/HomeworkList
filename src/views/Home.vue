@@ -1,18 +1,84 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+  <div v-for="list in lists" :key="list.id">
+    <el-card class="box-card">
+      <p>{{ timeToString(list.time) }} <strong>{{ list.text }}</strong> <span v-if="admin" class="tool"><i @click="del(list.id)" class="el-icon-delete"></i> / <i @click="edit(list.id)" class="el-icon-edit"></i></span></p>
+      <p>{{ findSubject(list.subject) }} {{ findTag(list.tag) }}</p>
+    </el-card>
+    <br>
   </div>
+  <el-dialog title="修改" :visible.sync="dialog">
+    <Edit :tags="tags" :subjects="subjects" :id="id" :lists="lists"></Edit>
+  </el-dialog>
+</div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import api from '@/api'
+import _ from 'lodash'
+import Edit from '@/views/Edit'
 export default {
   name: 'Home',
+  props: ['tags', 'subjects'],
   components: {
-    HelloWorld
+    Edit
+  },
+  data: () => ({
+    dialog: false,
+    lists: [],
+    admin: null
+  }),
+  async beforeMount () {
+    this.admin = window.localStorage.getItem('user')
+    this.fetchData()
+  },
+  methods: {
+    edit: function (id) {
+      if (!this.admin) {
+        return
+      }
+      this.dialog = true
+      this.id = id
+    },
+    del: async function (id) {
+      if (!this.admin) {
+        return
+      }
+      const response = (await api.delHw(id, JSON.parse(this.admin).username, JSON.parse(this.admin).password)).data
+      if (response.error) {
+        this.$message({
+          message: response.error,
+          type: 'error'
+        })
+      } else {
+        this.$message({
+          message: '',
+          type: 'success'
+        })
+      }
+      this.fetchData()
+    },
+    fetchData: async function () {
+      const today = (new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime())
+      this.lists = (await api.getHw(today)).data
+    },
+    findSubject: function (id) {
+      return _.findLast(this.subjects, (o) => o.id === id).name
+    },
+    findTag: function (id) {
+      return _.findLast(this.tags, (o) => o.id === id).name
+    },
+    timeToString: function (time) {
+      const d = new Date(time)
+      return `${d.getMonth() + 1}/${d.getDate()}`
+    }
   }
 }
 </script>
+
+<style lang="sass">
+  .box-card
+    width: 500px
+  .tool
+    float: right
+</style>
