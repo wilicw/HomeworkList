@@ -2,3 +2,4 @@ wheel
 flask-mongoengine
 flask
 flask-cors
+uwsgi
