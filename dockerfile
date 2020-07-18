@@ -16,6 +16,7 @@ RUN apk add python3-dev
 RUN apk add py-pip
 ADD api/requirements.txt .
 RUN pip3 install --upgrade pip
+RUN pip3 install wheel
 RUN pip3 install -r requirements.txt --src /usr/local/src
 COPY api .
 COPY nginx.conf /etc/nginx
