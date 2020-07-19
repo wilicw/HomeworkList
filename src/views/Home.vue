@@ -66,7 +66,7 @@ export default {
     },
     fetchData: async function () {
       const today = (new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime())
-      this.lists = _.sortBy((await api.getHw(today)).data, ['time'])
+      this.lists = _.sortBy((await api.getHw(today)).data, ['time', 'type', 'subject'])
     },
     findSubject: function (id) {
       return _.findLast(this.subjects, (o) => o.id === id).name
