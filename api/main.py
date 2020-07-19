@@ -1,12 +1,12 @@
 import json
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 import configparser
 config = configparser.ConfigParser()
 config.read('.config')
 
-app = Flask(__name__, static_folder = "../dist/static", template_folder = "../dist")
+app = Flask(__name__)
 CORS(app)
 app.config['MONGODB_SETTINGS'] = {
   'db': "homework",
@@ -47,10 +47,6 @@ class hw(db.Document):
             "tag": self.tag,
             "subject": self.subject,
             "time": self.time}
-
-@app.route('/')
-def catch_all():
-    return render_template("index.html")
 
 @app.route('/api/tags/', methods=['GET'])
 def query_tags():
