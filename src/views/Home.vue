@@ -44,7 +44,7 @@ export default {
       if (!this.admin) {
         return
       }
-      this.$confirm('是否刪除', 'Warning', {
+      this.$confirm('是否刪除', '警告', {
         confirmButtonText: '是',
         cancelButtonText: '取消',
         type: 'warning'
@@ -66,7 +66,7 @@ export default {
     },
     fetchData: async function () {
       const today = (new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime())
-      this.lists = (await api.getHw(today)).data
+      this.lists = _.sortBy((await api.getHw(today)).data, ['time'])
     },
     findSubject: function (id) {
       return _.findLast(this.subjects, (o) => o.id === id).name
