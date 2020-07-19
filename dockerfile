@@ -22,5 +22,5 @@ COPY api .
 COPY nginx.conf /etc/nginx
 RUN addgroup -S www && adduser -S www-data -G www
 RUN chmod +x /app/server/startup.sh
-COPY --from=build /app/dist /app/cli/dist
+COPY --from=build /app/dist /app/dist
 CMD ["./startup.sh"]
